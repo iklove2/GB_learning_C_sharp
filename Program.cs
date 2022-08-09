@@ -13,8 +13,8 @@
 string GenerateWord(int lengthArray)//Генерируем слово произвольной длины
 {
     Random rnd = new Random();
-    char[] wordOfArray = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 
-                           'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 
+    char[] wordOfArray = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
+                           'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
                            's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1',
                            '2', '3', '4', '5', '6', '7', '8', '9', '0',
                            '[', ']', '{', '}', ';', ':', '\'', '\"', '<',
@@ -26,7 +26,7 @@ string GenerateWord(int lengthArray)//Генерируем слово произ
     int lengthOfWord = wordOfArray.Length;
     for (var i = 0; i < lengthArray; i++)
     {
-        element = rnd.Next(1, lengthOfWord-1);
+        element = rnd.Next(1, lengthOfWord - 1);
         result = result + wordOfArray[element];
         Console.Write(wordOfArray[element]);
     }
@@ -71,9 +71,26 @@ void printArray(string[] arrayToPrint)
 
 string[] ResultArray(string[] arrayOfWorld, int minChar = 3)
 {
-    string[] result = new string[1];
-    
-
+    int lenght = arrayOfWorld.Length;
+    int indexResult = 0;
+    int count = 0;
+    for (var i = 0; i < lenght; i++)
+    {
+        if (arrayOfWorld[i].Length <= minChar)
+        {
+            count++;
+        }
+    }
+    string[] result = new string[count];
+    for (var i = 0; i < lenght; i++)
+    {
+        if (arrayOfWorld[i].Length <= minChar)
+        {
+            result[indexResult] = arrayOfWorld[i];
+            indexResult++;
+        }
+    }
+    return result;
 }
 
 void main()
@@ -83,8 +100,9 @@ void main()
     Console.Write("Введите количество элементов массива: ");
     int lengthArray = Convert.ToInt32(Console.ReadLine());
     string[] arrayOfWorld = GenerateArray(lengthArray, maxWordLength, 1);
-
+    string[] resultArray = ResultArray(arrayOfWorld);
     printArray(arrayOfWorld);
+    printArray(resultArray);
 }
 
 main();
