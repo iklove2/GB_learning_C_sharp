@@ -20,15 +20,14 @@ string GenerateWord(int lengthArray)//Генерируем слово произ
                            '[', ']', '{', '}', ';', ':', '\'', '\"', '<',
                            '>', ',', '.', '/', '\\', '!', '@', '#', '$',
                            '%', '^', '&', '*', '(', ')', '-', '+', '=',
-                           '?', '~', '`'};
+                           '?', '~', '`'};//массив символов, можно добавлять
     string result = string.Empty;
     int element = 0;
     int lengthOfWord = wordOfArray.Length;
     for (var i = 0; i < lengthArray; i++)
     {
-        element = rnd.Next(1, lengthOfWord - 1);
-        result = result + wordOfArray[element];
-        Console.Write(wordOfArray[element]);
+        element = rnd.Next(1, lengthOfWord - 1); // генерируем индекс символа 
+        result = result + wordOfArray[element];//добавляем символ в итоговое слово
     }
     return result;
 }
@@ -40,22 +39,21 @@ string[] GenerateArray(int length, int maxWordLength = 10, int minWordLength = 1
     for (int i = 0; i < length; i++)
     {
         wordLength = new Random().Next(minWordLength, maxWordLength);
-        result[i] = GenerateWord(wordLength);
+        result[i] = GenerateWord(wordLength);//генерируем очередное слово
     }
     return result;
 }
 
-void printColor(string message, ConsoleColor color = ConsoleColor.Green)
+void printColor(string message, ConsoleColor color = ConsoleColor.Green)//смена цвета и печать слова
 {
     Console.ForegroundColor = color;
     Console.Write($"{message}");
     Console.ResetColor();
 }
 
-void printArray(string[] arrayToPrint)
+void printArray(string[] arrayToPrint)//функция печати массива
 {
     int length = arrayToPrint.Length;
-    Console.WriteLine();
     printColor("[", ConsoleColor.DarkYellow);
     for (int i = 0; i < length - 1; i++)
     {
@@ -63,26 +61,33 @@ void printArray(string[] arrayToPrint)
         printColor($"{arrayToPrint[i]}", ConsoleColor.Green);
         printColor("\"", ConsoleColor.DarkBlue);
         printColor(", ", ConsoleColor.DarkYellow);
-        //Console.WriteLine();
     }
-    printColor($"\"{arrayToPrint[length - 1]}\"", ConsoleColor.DarkCyan);
+    printColor("\"", ConsoleColor.DarkBlue);
+    printColor($"{arrayToPrint[length - 1]}", ConsoleColor.Green);
+    printColor("\"", ConsoleColor.DarkBlue);
     printColor("]", ConsoleColor.DarkYellow);
 }
 
-string[] ResultArray(string[] arrayOfWorld, int minChar = 3)
+string[] ResultArray(string[] arrayOfWorld, int minChar = 3)//формируем массив, можно указать минимально количество длины слова
 {
-    int lenght = arrayOfWorld.Length;
+    int length = arrayOfWorld.Length;
     int indexResult = 0;
     int count = 0;
-    for (var i = 0; i < lenght; i++)
+    for (var i = 0; i < length; i++)
     {
         if (arrayOfWorld[i].Length <= minChar)
         {
             count++;
         }
     }
+    if (count <= 0) //если таких слов нет, вернем пустой массив
+    {
+        string[] resulterror = new string[1];
+        resulterror[0] = "[]";
+        return resulterror;
+    }
     string[] result = new string[count];
-    for (var i = 0; i < lenght; i++)
+    for (var i = 0; i < length; i++)
     {
         if (arrayOfWorld[i].Length <= minChar)
         {
@@ -95,14 +100,32 @@ string[] ResultArray(string[] arrayOfWorld, int minChar = 3)
 
 void main()
 {
+    Console.Clear();
     Console.Write("Введите максимальный размер слова: ");
     int maxWordLength = Convert.ToInt32(Console.ReadLine());
     Console.Write("Введите количество элементов массива: ");
     int lengthArray = Convert.ToInt32(Console.ReadLine());
+    Console.Write("Введите длину слова: ");
+    int minChar = Convert.ToInt32(Console.ReadLine());
+    if (minChar < 1)
+    {
+        Console.WriteLine("Длина слова не может быть меньше 1");
+        return;
+    }
     string[] arrayOfWorld = GenerateArray(lengthArray, maxWordLength, 1);
-    string[] resultArray = ResultArray(arrayOfWorld);
+    string[] resultArray = ResultArray(arrayOfWorld, minChar);
+    Console.WriteLine();
     printArray(arrayOfWorld);
-    printArray(resultArray);
+    printColor(" -> ", ConsoleColor.DarkBlue);
+    if (resultArray[0] != "[]")
+    {
+        printArray(resultArray);
+    }
+    else
+    {
+        printColor(" [] ", ConsoleColor.DarkYellow);
+    }
+    Console.WriteLine();
 }
 
 main();
